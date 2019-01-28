@@ -33,13 +33,14 @@ def callback():
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = TextSendMessage(text=event.message.text+' meow')
-    GreetingSticker = StickerSendMessage(
+    message = TextSendMessage(text=event.message.text+' meow')  # 模仿傳進來的字串，後面加喵
+    GreetingSticker_msg = StickerSendMessage(
     package_id='11538',
     sticker_id='51626494'
     )
-    if (event.message.text == 'hi'):
-        line_bot_api.reply_message(event.reply_token, GreetingSticker)
+    GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello']
+    if (event.message.text in GreetingTxext):
+        line_bot_api.reply_message(event.reply_token, GreetingSticker_msg)
     else:
         line_bot_api.reply_message(event.reply_token, message)  # 只有當有訊息傳來，才回覆訊息
 
