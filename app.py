@@ -34,7 +34,14 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = TextSendMessage(text=event.message.text+' meow')
-    line_bot_api.reply_message(event.reply_token, message)
+    GreetingSticker = StickerSendMessage(
+    package_id='4',
+    sticker_id='607'
+    )
+    if (event.message.text == 'hi'):
+        line_bot_api.reply_message(enent.reply_token, GreetingSticker)
+    else:
+        line_bot_api.reply_message(event.reply_token, message)  # 只有當有訊息傳來，才回覆訊息
 
 import os
 if __name__ == "__main__":
