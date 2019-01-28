@@ -39,7 +39,7 @@ def handle_message(event):
     sticker_id='51626494'
     )
     if (event.message.text == 'hi'):
-        line_bot_api.reply_message(enent.reply_token, GreetingSticker)
+        line_bot_api.reply_message(event.reply_token, GreetingSticker)
     else:
         line_bot_api.reply_message(event.reply_token, message)  # 只有當有訊息傳來，才回覆訊息
 
