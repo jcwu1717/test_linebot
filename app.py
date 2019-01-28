@@ -35,8 +35,8 @@ def callback():
 def handle_message(event):
     message = TextSendMessage(text=event.message.text+' meow')
     GreetingSticker = StickerSendMessage(
-    package_id='4',
-    sticker_id='607'
+    package_id='11538',
+    sticker_id='51626494'
     )
     if (event.message.text == 'hi'):
         line_bot_api.reply_message(enent.reply_token, GreetingSticker)
