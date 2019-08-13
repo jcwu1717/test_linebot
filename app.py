@@ -37,28 +37,7 @@ def callback():
         abort(400)
     return 'OK'
 
-# 處理文字訊息
-@handler.add(MessageEvent, message=TextMessage)  # 當收到的是文字訊息時，就會啟動
-def handle_message(event):
-    # 設定回覆訊息
-    message = TextSendMessage(text=event.message.text+' meow')  # 模仿傳進來的字串，後面加喵
-    
-    GreetingSticker_msg = StickerSendMessage(package_id='11538',sticker_id='51626494') #打招呼貼圖
-    GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello']
 
-    # 傳訊息
-    if (event.message.text in GreetingTxext):
-        line_bot_api.reply_message(event.reply_token, GreetingSticker_msg) # 收到打招呼的訊息，就回復打招呼的貼圖
-
-    elif (event.message.text == '查天氣'):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要查台灣哪裡的天氣？'))
-        
-        #if handle_message(event=MessageEvent, message=TextMessage):
-        location = event.message.text
-        m.get_36h_WeatherData(location)
-        m.print_36h_WeatherData()
-    else:
-        line_bot_api.reply_message(event.reply_token, message)  # 只有當有訊息傳來，才回覆訊息
 
 
 class bot:
@@ -113,6 +92,29 @@ class bot:
         
         else:
             print("請輸入數字。")
+
+    # 處理文字訊息
+    @handler.add(MessageEvent, message=TextMessage)  # 當收到的是文字訊息時，就會啟動
+    def handle_message(event):
+        # 設定回覆訊息
+        message = TextSendMessage(text=event.message.text+' meow')  # 模仿傳進來的字串，後面加喵
+        
+        GreetingSticker_msg = StickerSendMessage(package_id='11538',sticker_id='51626494') #打招呼貼圖
+        GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello']
+
+        # 傳訊息
+        if (event.message.text in GreetingTxext):
+            line_bot_api.reply_message(event.reply_token, GreetingSticker_msg) # 收到打招呼的訊息，就回復打招呼的貼圖
+
+        elif (event.message.text == '查天氣'):
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要查台灣哪裡的天氣？'))
+            
+            #if handle_message(event=MessageEvent, message=TextMessage):
+            location = event.message.text
+            self.get_36h_WeatherData(location)
+            self.print_36h_WeatherData()
+        else:
+            line_bot_api.reply_message(event.reply_token, message)  # 只有當有訊息傳來，才回覆訊息
         
         
 
