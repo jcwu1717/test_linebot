@@ -95,12 +95,12 @@ class bot:
             print("try again!")
 
     
-    @handler.add(MessageEvent, message=TextMessage)        
+    #@handler.add(MessageEvent, message=TextMessage)        
     def print_36h_WeatherData(self):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要看哪個時段的資訊？'))
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='(1)前六小時 (2)目前時段 (3)後六小時 （請輸入數字。）'))
         
-        ch = event.message.text
+        ch = '2'
         
         if (ch == '1' or ch == '2' or ch == '3'):
             index = int(ch)-1
