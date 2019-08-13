@@ -52,10 +52,11 @@ def handle_message(event):
 
     elif (event.message.text == '查天氣'):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要查台灣哪裡的天氣？'))
-        if handle_message(event=MessageEvent, message=TextMessage):
-            location = event.message.text
-            m.get_36h_WeatherData(location)
-            m.print_36h_WeatherData()
+        
+        #if handle_message(event=MessageEvent, message=TextMessage):
+        #    location = event.message.text
+        #    m.get_36h_WeatherData(location)
+        #    m.print_36h_WeatherData()
     else:
         line_bot_api.reply_message(event.reply_token, message)  # 只有當有訊息傳來，才回覆訊息
 
