@@ -84,8 +84,8 @@ def print_36h_WeatherData():
     
     if (ch == '1' or ch == '2' or ch == '3'):
         index = int(ch)-1
-        reply_str = ("天氣：" + wx['time'][index]['parameter']['parameterName'], \
-                "機率：" + wx['time'][index]['parameter']['parameterValue'] + "% \\") \ 
+        reply_str = ("天氣：" + wx['time'][index]['parameter']['parameterName'] + \
+                " 機率：" + wx['time'][index]['parameter']['parameterValue'] + "% \\") \ 
                 +("最低溫：" + min_t['time'][index]['parameter']['parameterName'] + "度 " \
                 "最高溫：" + max_t['time'][index]['parameter']['parameterName'] + "度 \\") \
                 +("降雨機率：" + pop['time'][index]['parameter']['parameterName'] + "% \\") \
