@@ -84,12 +84,10 @@ def print_36h_WeatherData():
     
     if (ch == '1' or ch == '2' or ch == '3'):
         index = int(ch)-1
-        reply_str = ("天氣：" + wx['time'][index]['parameter']['parameterName'] + \
-                " 機率：" + wx['time'][index]['parameter']['parameterValue'] + "% \\") \ 
-                +("最低溫：" + min_t['time'][index]['parameter']['parameterName'] + "度 " \
-                "最高溫：" + max_t['time'][index]['parameter']['parameterName'] + "度 \\") \
-                +("降雨機率：" + pop['time'][index]['parameter']['parameterName'] + "% \\") \
-                +("舒適度：" + cl['time'][index]['parameter']['parameterName'])
+        reply_str = ("天氣：" + m.wx['time'][1]['parameter']['parameterName'] + " 機率：" + m.wx['time'][1]['parameter']['parameterValue'] + "% \\") + \
+                    ("最低溫：" + m.min_t['time'][1]['parameter']['parameterName'] + "度 " + " 最高溫：" + m.max_t['time'][1]['parameter']['parameterName'] + "度 \\") + \
+                    ("降雨機率：" + m.pop['time'][1]['parameter']['parameterName'] + "% \\") + \
+                    ("舒適度：" + m.cl['time'][1]['parameter']['parameterName'])
 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_str))
     
