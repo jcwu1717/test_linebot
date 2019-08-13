@@ -53,69 +53,72 @@ class bot:
     def get_name(self):
         return self.__name
     
-    def get_36h_WeatherData(self, locationName):
-        self.location = locationName
+
+def get_36h_WeatherData(locationName):
+    location = locationName
+    
+    api_token = 'CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94'
+    api_url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization='+api_token+'&locationName='+location+'&sort=time'
+    try:
+        r = requests.get(api_url)  # JSON data
+        data_p = json.loads(r.text)  # 轉成 Python dict
+        data = data_p['records']['location']  # 需求資料本體
         
-        api_token = 'CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94'
-        api_url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization='+api_token+'&locationName='+self.location+'&sort=time'
-        try:
-            r = requests.get(api_url)  # JSON data
-            data = json.loads(r.text)  # 轉成 Python dict
-            self.data = data['records']['location']  # 需求資料本體
-            
-            self.wx = self.data[0]['weatherElement'][0]
-            self.pop = self.data[0]['weatherElement'][1]
-            self.min_t = self.data[0]['weatherElement'][2]
-            self.max_t = self.data[0]['weatherElement'][4]
-            self.cl = self.data[0]['weatherElement'][3]
-            
-            print(data['records']['location'][0]['locationName'] + data['records']['datasetDescription'] + " 已取得。")
-        except:
-            print("try again!")
+        wx = data[0]['weatherElement'][0]
+        pop = data[0]['weatherElement'][1]
+        min_t = data[0]['weatherElement'][2]
+        max_t = data[0]['weatherElement'][4]
+        cl = data[0]['weatherElement'][3]
+        
+        print(data_p['records']['location'][0]['locationName'] + data_p['records']['datasetDescription'] + " 已取得。")
+    except:
+        print("try again!")
 
     
-    #@handler.add(MessageEvent, message=TextMessage)        
-    def print_36h_WeatherData(self):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要看哪個時段的資訊？'))
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='(1)前六小時 (2)目前時段 (3)後六小時 （請輸入數字。）'))
-        
-        ch = '2'
-        
-        if (ch == '1' or ch == '2' or ch == '3'):
-            index = int(ch)-1
-            print("天氣：" + self.wx['time'][index]['parameter']['parameterName'], \
-                    "機率：" + self.wx['time'][index]['parameter']['parameterValue'] + "%")
-            print("最低溫：" + self.min_t['time'][index]['parameter']['parameterName'] + "度 "\
-                    "最高溫：" + self.max_t['time'][index]['parameter']['parameterName'] + "度")
-            print("降雨機率：" + self.pop['time'][index]['parameter']['parameterName'] + "%")
-            print("舒適度：" + self.cl['time'][index]['parameter']['parameterName'])
-        
-        else:
-            print("請輸入數字。")
+@handler.add(MessageEvent, message=TextMessage)        
+def print_36h_WeatherData():
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要看哪個時段的資訊？'))
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text='(1)前六小時 (2)目前時段 (3)後六小時 （請輸入數字。）'))
+    
+    ch = '2'
+    
+    if (ch == '1' or ch == '2' or ch == '3'):
+        index = int(ch)-1
+        reply_str = ("天氣：" + wx['time'][index]['parameter']['parameterName'], \
+                "機率：" + wx['time'][index]['parameter']['parameterValue'] + "% \\") \ 
+                +("最低溫：" + min_t['time'][index]['parameter']['parameterName'] + "度 " \
+                "最高溫：" + max_t['time'][index]['parameter']['parameterName'] + "度 \\") \
+                +("降雨機率：" + pop['time'][index]['parameter']['parameterName'] + "% \\") \
+                +("舒適度：" + cl['time'][index]['parameter']['parameterName'])
 
-    # 處理文字訊息
-    @handler.add(MessageEvent, message=TextMessage)  # 當收到的是文字訊息時，就會啟動
-    def handle_message(event):
-        # 設定回覆訊息
-        message = TextSendMessage(text=event.message.text+' meow')  # 模仿傳進來的字串，後面加喵
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_str))
+    
+    else:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請輸入數字。'))
+
+# 處理文字訊息
+@handler.add(MessageEvent, message=TextMessage)  # 當收到的是文字訊息時，就會啟動
+def handle_message(event):
+    # 設定回覆訊息
+    message = TextSendMessage(text=event.message.text+' meow')  # 模仿傳進來的字串，後面加喵
+    
+    GreetingSticker_msg = StickerSendMessage(package_id='11538',sticker_id='51626494') #打招呼貼圖
+    GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello']
+
+    # 傳訊息
+    if (event.message.text in GreetingTxext):
+        line_bot_api.reply_message(event.reply_token, GreetingSticker_msg) # 收到打招呼的訊息，就回復打招呼的貼圖
+
+    elif (event.message.text == '查天氣'):
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要查台灣哪裡的天氣？'))
         
-        GreetingSticker_msg = StickerSendMessage(package_id='11538',sticker_id='51626494') #打招呼貼圖
-        GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello']
-
-        # 傳訊息
-        if (event.message.text in GreetingTxext):
-            line_bot_api.reply_message(event.reply_token, GreetingSticker_msg) # 收到打招呼的訊息，就回復打招呼的貼圖
-
-        elif (event.message.text == '查天氣'):
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要查台灣哪裡的天氣？'))
-            
-            #if handle_message(event=MessageEvent, message=TextMessage):
+        if event.message.text == '高雄':
             location = event.message.text
-            self.get_36h_WeatherData(location)
-            self.print_36h_WeatherData()
-        else:
-            line_bot_api.reply_message(event.reply_token, message)  # 只有當有訊息傳來，才回覆訊息
-        
+            get_36h_WeatherData(location)
+            print_36h_WeatherData()
+    else:
+        line_bot_api.reply_message(event.reply_token, message)  # 只有當有訊息傳來，才回覆訊息
+    
         
 
 import os, json, requests
