@@ -62,8 +62,8 @@ def get_36h_WeatherData(locationName):
     
      
 def print_36h_WeatherData():
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要看哪個時段的資訊？'))
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text='(1)前六小時 (2)目前時段 (3)後六小時 （請輸入數字。）'))
+    #line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要看哪個時段的資訊？'))
+    #line_bot_api.reply_message(event.reply_token, TextSendMessage(text='(1)前六小時 (2)目前時段 (3)後六小時 （請輸入數字。）'))
     
     ch = '2'
     
@@ -73,8 +73,9 @@ def print_36h_WeatherData():
                     ("最低溫：" + min_t['time'][1]['parameter']['parameterName'] + "度 " + " 最高溫：" + max_t['time'][1]['parameter']['parameterName'] + "度 \\") + \
                     ("降雨機率：" + pop['time'][1]['parameter']['parameterName'] + "% \\") + \
                     ("舒適度：" + cl['time'][1]['parameter']['parameterName'])
-
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_str))
+        
+        return reply_str
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_str))
     
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請輸入數字。'))
@@ -101,7 +102,8 @@ def handle_message(event):
         ### TODO: get reply_token to trace event
         location = '高雄市'
         get_36h_WeatherData(location)
-        print_36h_WeatherData() #insert event
+        reply_msg = print_36h_WeatherData() #insert event
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_msg))
 
     else:
         line_bot_api.reply_message(event.reply_token, default_message)  # 只有當有訊息傳來，才回覆訊息
