@@ -49,19 +49,22 @@ def get_36h_WeatherData(locationName):
         data_p = json.loads(r.text)  # 轉成 Python dict
         data = data_p['records']['location']  # 需求資料本體
         
-        wx = data[0]['weatherElement'][0]
-        pop = data[0]['weatherElement'][1]
-        min_t = data[0]['weatherElement'][2]
-        max_t = data[0]['weatherElement'][4]
-        cl = data[0]['weatherElement'][3]
+        weatherData = {
+            'wx' : data[0]['weatherElement'][0]
+            'pop' : data[0]['weatherElement'][1]
+            'min_t' : data[0]['weatherElement'][2]
+            'max_t' : data[0]['weatherElement'][4]
+            'cl' : data[0]['weatherElement'][3]
+        }
         
         print(data_p['records']['location'][0]['locationName'] + data_p['records']['datasetDescription'] + " 已取得。")
+        return weatherData
     except:
         print("try again!")
 
     
      
-def print_36h_WeatherData():
+def print_36h_WeatherData(d):
     #line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要看哪個時段的資訊？'))
     #line_bot_api.reply_message(event.reply_token, TextSendMessage(text='(1)前六小時 (2)目前時段 (3)後六小時 （請輸入數字。）'))
     
@@ -69,10 +72,10 @@ def print_36h_WeatherData():
     
     if (ch == '1' or ch == '2' or ch == '3'):
         #index = int(ch)-1
-        reply_str = ("天氣：" + wx['time'][1]['parameter']['parameterName'] + " 機率：" + wx['time'][1]['parameter']['parameterValue'] + "% \\") + \
-                    ("最低溫：" + min_t['time'][1]['parameter']['parameterName'] + "度 " + " 最高溫：" + max_t['time'][1]['parameter']['parameterName'] + "度 \\") + \
-                    ("降雨機率：" + pop['time'][1]['parameter']['parameterName'] + "% \\") + \
-                    ("舒適度：" + cl['time'][1]['parameter']['parameterName'])
+        reply_str = ("天氣：" + d['wx']['time'][1]['parameter']['parameterName'] + " 機率：" + d['wx']['time'][1]['parameter']['parameterValue'] + "% \\") + \
+                    ("最低溫：" + d['min_t']['time'][1]['parameter']['parameterName'] + "度 " + " 最高溫：" + d['max_t']['time'][1]['parameter']['parameterName'] + "度 \\") + \
+                    ("降雨機率：" + d['pop']['time'][1]['parameter']['parameterName'] + "% \\") + \
+                    ("舒適度：" + d['cl']['time'][1]['parameter']['parameterName'])
         
         return reply_str
         #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_str))
@@ -101,8 +104,8 @@ def handle_message(event):
     elif text == '高雄天氣':   
         ### TODO: get reply_token to trace event
         location = '高雄市'
-        get_36h_WeatherData(location)
-        reply_msg = print_36h_WeatherData() #insert event
+        weatherData = get_36h_WeatherData(location)
+        reply_msg = print_36h_WeatherData(weatherData) #insert event
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_msg))
 
     else:
