@@ -72,9 +72,9 @@ def print_36h_WeatherData(d):
     
     if (ch == '1' or ch == '2' or ch == '3'):
         #index = int(ch)-1
-        reply_str = ("天氣：" + d['wx']['time'][1]['parameter']['parameterName'] + " 機率：" + d['wx']['time'][1]['parameter']['parameterValue'] + "% \\") + \
-                    ("最低溫：" + d['min_t']['time'][1]['parameter']['parameterName'] + "度 " + " 最高溫：" + d['max_t']['time'][1]['parameter']['parameterName'] + "度 \\") + \
-                    ("降雨機率：" + d['pop']['time'][1]['parameter']['parameterName'] + "% \\") + \
+        reply_str = ("天氣：" + d['wx']['time'][1]['parameter']['parameterName'] + " 機率：" + d['wx']['time'][1]['parameter']['parameterValue'] + "% ") + \
+                    ("最低溫：" + d['min_t']['time'][1]['parameter']['parameterName'] + "度 " + " 最高溫：" + d['max_t']['time'][1]['parameter']['parameterName'] + "度 ") + \
+                    ("降雨機率：" + d['pop']['time'][1]['parameter']['parameterName'] + "% ") + \
                     ("舒適度：" + d['cl']['time'][1]['parameter']['parameterName'])
         
         return reply_str
@@ -107,6 +107,13 @@ def handle_message(event):
         weatherData = get_36h_WeatherData(location)
         reply_msg = print_36h_WeatherData(weatherData) #insert event
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_msg))
+
+    elif text == 'push':
+        line_bot_api.push_message(
+            event.source.user_id, [
+                TextSendMessage(text='PUSH!'),
+            ]
+        )
 
     else:
         line_bot_api.reply_message(event.reply_token, default_message)  # 只有當有訊息傳來，才回覆訊息
