@@ -122,8 +122,7 @@ def handle_message(event):
         #reply_msg = print_36h_WeatherData(weatherData) #insert event
         line_bot_api.reply_message(
             event.reply_token, [
-                TextSendMessage(text='天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName']),
-                TextSendMessage(text='機率：' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%'),
+                TextSendMessage(text='天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%' + ')' ),
                 TextSendMessage(text='最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度 '),
                 TextSendMessage(text='降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%'),
                 TextSendMessage(text='舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName'])
