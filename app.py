@@ -50,11 +50,11 @@ def get_36h_WeatherData(locationName):
         data = data_p['records']['location']  # 需求資料本體
         
         weatherData = {
-            'wx' : data[0]['weatherElement'][0]
-            'pop' : data[0]['weatherElement'][1]
-            'min_t' : data[0]['weatherElement'][2]
-            'max_t' : data[0]['weatherElement'][4]
-            'cl' : data[0]['weatherElement'][3]
+            'wx': data[0]['weatherElement'][0], \
+            'pop': data[0]['weatherElement'][1], \
+            'min_t': data[0]['weatherElement'][2], \
+            'max_t': data[0]['weatherElement'][4], \
+            'cl': data[0]['weatherElement'][3]
         }
         
         print(data_p['records']['location'][0]['locationName'] + data_p['records']['datasetDescription'] + " 已取得。")
