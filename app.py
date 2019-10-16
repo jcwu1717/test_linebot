@@ -38,7 +38,7 @@ def callback():
     return 'OK'
 
 
-    
+# 使用氣象局 API 抓取鄉鎮36小時天氣資訊    
 def get_36h_WeatherData(locationName):
     location = locationName
     
@@ -62,8 +62,20 @@ def get_36h_WeatherData(locationName):
     except:
         print("try again!")
 
+def get_earthquakeData():
+    api_url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/E-A0015-001?Authorization=CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94&limit=3'
+    try:
+        r = requests.get(api_url)  # JSON data
+        rawData = json.loads(r.text)  # 轉成 Python dict
+        reportContent = rawData['records']['earthquake'][0]['reportContent']
+        img_url = rawData['records']['earthquake'][0]['reportImageURI']
+        return reportContent, img_url
+    except:
+        print("try again!")
+
+
     
-     
+# ================= 測試區 開始 ================     
 def print_36h_WeatherData(d):
     #line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要看哪個時段的資訊？'))
     #line_bot_api.reply_message(event.reply_token, TextSendMessage(text='(1)前六小時 (2)目前時段 (3)後六小時 （請輸入數字。）'))
@@ -82,17 +94,19 @@ def print_36h_WeatherData(d):
     
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請輸入數字。'))
+# ================= 測試區 結束 ==============
 
+# ================= 機器人區塊 開始 =================
 # 處理文字訊息
 @handler.add(MessageEvent, message=TextMessage)  # 當收到的是文字訊息時，就會啟動
 def handle_message(event):
     text = event.message.text
 
-    # 設定回覆訊息
+    # 設定預設回覆訊息
     default_message = TextSendMessage(text=text+' meow')  # 模仿傳進來的字串，後面加喵
     
     GreetingSticker_msg = StickerSendMessage(package_id='11538',sticker_id='51626494') #打招呼貼圖
-    GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello']
+    GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello'] # 能被接受的打招呼字串
 
     # 傳訊息
     if (text in GreetingTxext):
@@ -113,13 +127,13 @@ def handle_message(event):
                 TextSendMessage(text="Bot can't use profile API without user ID"))
 
     elif (text == '查天氣'):
+        ### TODO: 使用使用者位置查詢天氣 get reply_token to trace event
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要查台灣哪裡的天氣？'))
         
     elif text == '高雄天氣':   
-        ### TODO: get reply_token to trace event
         location = '高雄市'
         weatherData = get_36h_WeatherData(location)
-        #reply_msg = print_36h_WeatherData(weatherData) #insert event
+        #reply_msg = print_36h_WeatherData(weatherData) #測試用
         line_bot_api.reply_message(
             event.reply_token, [
                 TextSendMessage(text='天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%' + ')' ),
@@ -128,17 +142,24 @@ def handle_message(event):
                 TextSendMessage(text='舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName'])
             ]
         )
+    # 回傳最近的顯著有感地震報告
+    elif text == '地震':
+        report, reportImgURL = get_earthquakeData()
 
-    elif text == 'push':
-        line_bot_api.push_message(
-            event.source.user_id, [
-                TextSendMessage(text='PUSH!'),
+        line_bot_api.reply_message(
+            event.reply_token, [
+                TextSendMessage(text=report),
+                ImageSendMessage(
+                    original_content_url=reportImgURL,
+                    preview_image_url=reportImgURL
+                )
             ]
         )
+        
 
     else:
         line_bot_api.reply_message(event.reply_token, default_message)  # 只有當有訊息傳來，才回覆訊息
-    
+# ================= 機器人區塊 結束 =================
         
 
 import os, json, requests
