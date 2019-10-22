@@ -1,3 +1,5 @@
+# ================= 機器人初始化 開始 =================
+import os, json, requests, random
 from flask import Flask, request, abort
 
 from linebot import (
@@ -9,8 +11,6 @@ from linebot.exceptions import (
 from linebot.models import *
 
 app = Flask(__name__)  # 宣告一個變數負責掌握 Flask server
-
-
 
 # line_bot_api 物件初始化
 # Channel Access Token
@@ -36,8 +36,17 @@ def callback():
     except InvalidSignatureError:       # 檢查 Channel Access Token ，若錯誤則回傳 400 Bad Request
         abort(400)
     return 'OK'
+# ================= 機器人初始化 結束 =================
+
 
 # ================= 自訂功能區 開始 ================
+# 丟硬幣
+def roll_coin():
+    result = random.randint(0,1)
+    if result == 0:
+        return "反面"
+    else:
+        return "正面" 
 # 使用氣象局 API 抓取鄉鎮36小時天氣資訊    
 def get_36h_WeatherData(locationName):
     location = locationName
@@ -72,6 +81,8 @@ def get_earthquakeData():
         return reportContent, img_url
     except:
         print("try again!")
+
+
 # ================= 自訂功能區 結束 ================
 
     
@@ -96,7 +107,8 @@ def print_36h_WeatherData(d):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請輸入數字。'))
 # ================= 測試區 結束 ==============
 
-# ================= 機器人區塊 開始 =================
+
+# ================= 機器人傳訊區塊 開始 =================
 # 處理文字訊息
 @handler.add(MessageEvent, message=TextMessage)  # 當收到的是文字訊息時，就會啟動
 def handle_message(event):
@@ -155,14 +167,14 @@ def handle_message(event):
                 )
             ]
         )
+    elif text == '丟硬幣':
+        line_bot_api.reply_message(event.reply_token, text='你丟到'+roll_coin()+'！')
         
 
     else:
         line_bot_api.reply_message(event.reply_token, default_message)  # 只有當有訊息傳來，才回覆預設訊息
-# ================= 機器人區塊 結束 =================
+# ================= 機器人傳訊區塊 結束 =================
         
-
-import os, json, requests
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
