@@ -168,8 +168,8 @@ def handle_message(event):
             ]
         )
     elif text == '丟硬幣':
-        coin = roll_coin()
-        line_bot_api.reply_message(event.reply_token, text='你丟到'+coin+'！')
+        #coin = roll_coin()
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你丟到'+roll_coin()+'！'))
         
 
     else:
