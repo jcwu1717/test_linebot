@@ -44,9 +44,9 @@ def callback():
 def roll_coin():
     result = random.randint(0,1)
     if result == 0:
-        return "反面"
+        return '反面'
     else:
-        return "正面" 
+        return '正面'
 # 使用氣象局 API 抓取鄉鎮36小時天氣資訊    
 def get_36h_WeatherData(locationName):
     location = locationName
