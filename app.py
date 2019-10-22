@@ -37,7 +37,7 @@ def callback():
         abort(400)
     return 'OK'
 
-
+# ================= 自訂功能區 開始 ================
 # 使用氣象局 API 抓取鄉鎮36小時天氣資訊    
 def get_36h_WeatherData(locationName):
     location = locationName
@@ -72,7 +72,7 @@ def get_earthquakeData():
         return reportContent, img_url
     except:
         print("try again!")
-
+# ================= 自訂功能區 結束 ================
 
     
 # ================= 測試區 開始 ================     
@@ -104,9 +104,9 @@ def handle_message(event):
 
     # 設定預設回覆訊息
     default_message = TextSendMessage(text=text+' meow')  # 模仿傳進來的字串，後面加喵
-    
+    # 設定預設打招呼訊息
     GreetingSticker_msg = StickerSendMessage(package_id='11538',sticker_id='51626494') #打招呼貼圖
-    GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello'] # 能被接受的打招呼字串
+    GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello','嗨','你好','哈囉'] # 能被接受的打招呼字串
 
     # 傳訊息
     if (text in GreetingTxext):
@@ -125,7 +125,7 @@ def handle_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="Bot can't use profile API without user ID"))
-
+    # NEED Update
     elif (text == '查天氣'):
         ### TODO: 使用使用者位置查詢天氣 get reply_token to trace event
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要查台灣哪裡的天氣？'))
@@ -158,7 +158,7 @@ def handle_message(event):
         
 
     else:
-        line_bot_api.reply_message(event.reply_token, default_message)  # 只有當有訊息傳來，才回覆訊息
+        line_bot_api.reply_message(event.reply_token, default_message)  # 只有當有訊息傳來，才回覆預設訊息
 # ================= 機器人區塊 結束 =================
         
 
