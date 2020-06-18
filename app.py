@@ -83,7 +83,7 @@ def get_earthquakeData():
         print("try again!")
 
 # 使用高雄城市資料平台提供之 API
-def get_kh_food:
+def get_kh_food():
     src = "https://api.kcg.gov.tw:443/api/service/Get/d42e9a5a-d176-47fe-9ff9-7a49d4fe01bd"
     
     with request.urlopen(src) as response:
