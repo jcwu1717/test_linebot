@@ -91,7 +91,8 @@ def get_kh_food():
     
     with urlrequest.urlopen(src) as response:
         data = json.load(response)
-
+    shoplist = data['data']
+    
     shop = shoplist[random.randint(1,len(data['data']))] # 隨機抽取一家店
     reply_str = (shop['name']) + \
                 (shop['description']) + \
