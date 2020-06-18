@@ -92,13 +92,13 @@ def get_kh_food():
 
     shoplist = data['data']
     shop = shoplist[random.randint(1,len(data['data']))] # 隨機抽取一家店
-    reply_str = (shop['name']) + \
-                (shop['description']) + \
-                ("營業時間：", shop['opentime']) + \
-                ("地址：", shop['add']) + \
-                ("電話：", shop['tel']) + \
-                ("Website：", shop['website']) + \
-                ("資料更新時間：", shop['updatetime']) + \
+    reply_str = (shop['name']) + "\n" \
+                (shop['description']) + "\n" \
+                ("營業時間：", shop['opentime']) + "\n" \
+                ("地址：", shop['add']) + "\n" \
+                ("電話：", shop['tel']) + "\n" \
+                ("Website：", shop['website']) + "\n" \
+                ("資料更新時間：", shop['updatetime']) + "\n" \
                 "資料來源：高雄城市資料平台-高雄旅遊網-餐飲資料"
     return reply_str
     
