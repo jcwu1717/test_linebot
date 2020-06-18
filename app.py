@@ -100,6 +100,7 @@ def get_kh_food():
                 "Website：", shop['website'] + "\n" \
                 "資料更新時間：", shop['updatetime'] + "\n" \
                 "資料來源：高雄城市資料平台-高雄旅遊網-餐飲資料"
+    reply_str = "".join(reply_str)
     return reply_str
     
 
@@ -175,6 +176,7 @@ def handle_message(event):
             ]
         )
 
+    # 回傳高雄市旅遊網推薦的其中一個美食
     elif text == '吃':
         eatdata = get_kh_food()
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=eatdata))
