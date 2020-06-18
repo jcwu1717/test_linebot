@@ -82,6 +82,24 @@ def get_earthquakeData():
     except:
         print("try again!")
 
+# 使用高雄城市資料平台提供之 API
+def get_kh_food:
+    src = "https://api.kcg.gov.tw:443/api/service/Get/d42e9a5a-d176-47fe-9ff9-7a49d4fe01bd"
+    
+    with request.urlopen(src) as response:
+        data = json.load(response)
+
+    shop = shoplist[random.randint(1,len(data['data']))] # 隨機抽取一家店
+    reply_str = (shop['name']) + \
+                (shop['description']) + \
+                ("營業時間：", shop['opentime']) + \
+                ("地址：", shop['add']) + \
+                ("電話：", shop['tel']) + \
+                ("Website：", shop['website']) + \
+                ("資料更新時間：", shop['updatetime']) + \
+                "資料來源：高雄城市資料平台-高雄旅遊網-餐飲資料"
+    return reply_str
+    
 
 # ================= 自訂功能區 結束 ================
 
@@ -115,7 +133,7 @@ def handle_message(event):
     text = event.message.text
 
     # 設定預設回覆訊息
-    default_message = TextSendMessage(text=text+' meow')  # 模仿傳進來的字串，後面加喵
+    default_message = TextSendMessage(text=text+' 喵')  # 模仿傳進來的字串，後面加喵
     # 設定預設打招呼訊息
     GreetingSticker_msg = StickerSendMessage(package_id='11538',sticker_id='51626494') #打招呼貼圖
     GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello','嗨','你好','哈囉'] # 能被接受的打招呼字串
@@ -154,6 +172,11 @@ def handle_message(event):
                 TextSendMessage(text='舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName'])
             ]
         )
+
+    elif text == '吃':
+        eatdata = get_kh_food()
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=eatdata)
+
     # 回傳最近的顯著有感地震報告
     elif text == '地震':
         report, reportImgURL = get_earthquakeData()
