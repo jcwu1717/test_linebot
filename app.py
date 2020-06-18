@@ -1,7 +1,6 @@
 # ================= 機器人初始化 開始 =================
-import os, json, random
+import os, json, requests, random
 import urllib.request as urlrequest
-
 from flask import Flask, request, abort
 
 from linebot import (
@@ -54,11 +53,10 @@ def get_36h_WeatherData(locationName):
     location = locationName
     
     api_token = 'CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94'
-    src = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization='+api_token+'&locationName='+location+'&sort=time'
+    api_url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization='+api_token+'&locationName='+location+'&sort=time'
     try:
-        with urlrequest.urlopen(src) as response:
-            data_p = json.load(response)
-        
+        r = requests.get(api_url)  # JSON data
+        data_p = json.loads(r.text)  # 轉成 Python dict
         data = data_p['records']['location']  # 需求資料本體
         
         weatherData = {
@@ -75,10 +73,10 @@ def get_36h_WeatherData(locationName):
         print("try again!")
 
 def get_earthquakeData():
-    src = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/E-A0015-001?Authorization=CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94&limit=3'
+    api_url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/E-A0015-001?Authorization=CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94&limit=3'
     try:
-        with urlrequest.urlopen(src) as response:
-            rawData = json.load(response)
+        r = requests.get(api_url)  # JSON data
+        rawData = json.loads(r.text)  # 轉成 Python dict
         reportContent = rawData['records']['earthquake'][0]['reportContent']
         img_url = rawData['records']['earthquake'][0]['reportImageURI']
         return reportContent, img_url
@@ -91,8 +89,8 @@ def get_kh_food():
     
     with urlrequest.urlopen(src) as response:
         data = json.load(response)
+
     shoplist = data['data']
-    
     shop = shoplist[random.randint(1,len(data['data']))] # 隨機抽取一家店
     reply_str = (shop['name']) + \
                 (shop['description']) + \
