@@ -175,7 +175,7 @@ def handle_message(event):
 
     elif text == '吃':
         eatdata = get_kh_food()
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=eatdata)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=eatdata))
 
     # 回傳最近的顯著有感地震報告
     elif text == '地震':
