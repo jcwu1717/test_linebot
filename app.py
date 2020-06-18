@@ -1,5 +1,7 @@
 # ================= 機器人初始化 開始 =================
-import os, json, requests, random
+import os, json, random
+import urllib.request as urlrequest
+
 from flask import Flask, request, abort
 
 from linebot import (
@@ -52,10 +54,11 @@ def get_36h_WeatherData(locationName):
     location = locationName
     
     api_token = 'CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94'
-    api_url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization='+api_token+'&locationName='+location+'&sort=time'
+    src = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization='+api_token+'&locationName='+location+'&sort=time'
     try:
-        r = requests.get(api_url)  # JSON data
-        data_p = json.loads(r.text)  # 轉成 Python dict
+        with urlrequest.urlopen(src) as response:
+            data_p = json.load(response)
+        
         data = data_p['records']['location']  # 需求資料本體
         
         weatherData = {
@@ -72,10 +75,10 @@ def get_36h_WeatherData(locationName):
         print("try again!")
 
 def get_earthquakeData():
-    api_url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/E-A0015-001?Authorization=CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94&limit=3'
+    src = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/E-A0015-001?Authorization=CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94&limit=3'
     try:
-        r = requests.get(api_url)  # JSON data
-        rawData = json.loads(r.text)  # 轉成 Python dict
+        with urlrequest.urlopen(src) as response:
+            rawData = json.load(response)
         reportContent = rawData['records']['earthquake'][0]['reportContent']
         img_url = rawData['records']['earthquake'][0]['reportImageURI']
         return reportContent, img_url
@@ -86,7 +89,7 @@ def get_earthquakeData():
 def get_kh_food():
     src = "https://api.kcg.gov.tw:443/api/service/Get/d42e9a5a-d176-47fe-9ff9-7a49d4fe01bd"
     
-    with request.urlopen(src) as response:
+    with urlrequest.urlopen(src) as response:
         data = json.load(response)
 
     shop = shoplist[random.randint(1,len(data['data']))] # 隨機抽取一家店
@@ -136,7 +139,7 @@ def handle_message(event):
     default_message = TextSendMessage(text=text+' 喵')  # 模仿傳進來的字串，後面加喵
     # 設定預設打招呼訊息
     GreetingSticker_msg = StickerSendMessage(package_id='11538',sticker_id='51626494') #打招呼貼圖
-    GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello','嗨','你好','哈囉'] # 能被接受的打招呼字串
+    GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello','嗨','你好','哈囉','您好','尼好'] # 能被接受的打招呼字串
 
     # 傳訊息
     if (text in GreetingTxext):
