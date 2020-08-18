@@ -43,7 +43,7 @@ def callback():
 # ================= 自訂功能區 開始 ================
 # 機器人使用說明
 def bot_help():
-    helpText = "歡迎使用喵罷，以下是我會的功能，輸入冒號後的指令以使用該功能\n---------------\n" + \
+    helpText = "歡迎使用喵罷，以下是我會做的事，輸入冒號後的指令以使用該功能\n------------------------------\n" + \
                 "丟硬幣：丟硬幣\n" + \
                 "查詢高雄天氣：高雄天氣\n" + \
                 "查詢最近的地震：地震\n" + \
@@ -174,6 +174,18 @@ def handle_message(event):
         
     elif text == '高雄天氣':   
         location = '高雄市'
+        weatherData = get_36h_WeatherData(location)
+        #reply_msg = print_36h_WeatherData(weatherData) #測試用
+        line_bot_api.reply_message(
+            event.reply_token, [
+                TextSendMessage(text='天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%' + ')' ),
+                TextSendMessage(text='最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度 '),
+                TextSendMessage(text='降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%'),
+                TextSendMessage(text='舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName'])
+            ]
+        )
+    elif text == '台北天氣':   
+        location = '台北市'
         weatherData = get_36h_WeatherData(location)
         #reply_msg = print_36h_WeatherData(weatherData) #測試用
         line_bot_api.reply_message(
