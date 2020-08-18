@@ -175,27 +175,19 @@ def handle_message(event):
     elif text == '高雄天氣':   
         location = '高雄市'
         weatherData = get_36h_WeatherData(location)
-        #reply_msg = print_36h_WeatherData(weatherData) #測試用
-        line_bot_api.reply_message(
-            event.reply_token, [
-                TextSendMessage(text='天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%' + ')' ),
-                TextSendMessage(text='最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度 '),
-                TextSendMessage(text='降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%'),
-                TextSendMessage(text='舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName'])
-            ]
-        )
-    elif text == '台北天氣':   
-        location = '台北市'
+        reply_msg = '天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%)\n' + \
+                    '最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度\n' + \
+                    '降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%\n' + \
+                    '舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName']
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_msg))
+    elif text == '台北天氣' || text == '臺北天氣':   
+        location = '臺北市'
         weatherData = get_36h_WeatherData(location)
-        #reply_msg = print_36h_WeatherData(weatherData) #測試用
-        line_bot_api.reply_message(
-            event.reply_token, [
-                TextSendMessage(text='天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%' + ')' ),
-                TextSendMessage(text='最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度 '),
-                TextSendMessage(text='降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%'),
-                TextSendMessage(text='舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName'])
-            ]
-        )
+        eply_msg = '天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%)\n' + \
+                    '最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度\n' + \
+                    '降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%\n' + \
+                    '舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName']
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_msg))
 
     # 回傳高雄市旅遊網推薦的其中一個美食
     elif text == '吃':
