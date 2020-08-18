@@ -180,7 +180,7 @@ def handle_message(event):
                     '降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%\n' + \
                     '舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName']
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_msg))
-    elif text == '台北天氣' || text == '臺北天氣':   
+    elif text == '台北天氣' or text == '臺北天氣':   
         location = '臺北市'
         weatherData = get_36h_WeatherData(location)
         eply_msg = '天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%)\n' + \
