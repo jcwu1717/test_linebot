@@ -183,7 +183,7 @@ def handle_message(event):
     elif text == '台北天氣' or text == '臺北天氣':   
         location = '臺北市'
         weatherData = get_36h_WeatherData(location)
-        eply_msg = '天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%)\n' + \
+        reply_msg = '天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%)\n' + \
                     '最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度\n' + \
                     '降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%\n' + \
                     '舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName']
