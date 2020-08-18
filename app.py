@@ -42,7 +42,7 @@ def callback():
 
 # ================= 自訂功能區 開始 ================
 # 機器人使用說明
-def help():
+def bot_help():
     helpText = "歡迎使用喵罷，以下是我會的功能，輸入冒號後的指令以使用該功能\n---------------\n" + \
                 "丟硬幣：丟硬幣\n" + \
                 "查詢高雄天氣：高雄天氣\n" + \
@@ -207,7 +207,7 @@ def handle_message(event):
         #coin = roll_coin()
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='你丟到'+roll_coin()+'！'))
     elif text == 'help':
-        reply_message = help()
+        reply_message = bot_help()
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_message))
         
 
