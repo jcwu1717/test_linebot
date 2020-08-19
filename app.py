@@ -92,7 +92,7 @@ def weather_helper(locationName):
     fileAPI_url = 'https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-0'+str(data_id)+'?Authorization='+api_token+'&format=JSON'
     
     r = requests.get(fileAPI_url)
-    etag = req.headers['ETag']
+    etag = r.headers['ETag']
     headers = {'If-None-Match': etag}
     try:
         if requests.get(fileAPI_url,headers=headers).status_code == 304:
