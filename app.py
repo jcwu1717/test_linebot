@@ -46,6 +46,9 @@ def bot_help():
     helpText = "歡迎使用喵罷，以下是我會做的事，輸入冒號後的指令以使用該功能\n------------------------------\n" + \
                 "丟硬幣：丟硬幣\n" + \
                 "查詢高雄天氣：高雄天氣\n" + \
+                "查詢台北天氣：台北天氣\n" + \
+                "使用高雄天氣小幫手：高雄天氣小幫手\n" + \
+                "使用台北天氣小幫手：台北天氣小幫手\n" + \
                 "查詢最近的地震：地震\n" + \
                 "查詢高雄美食：吃"
     return helpText
@@ -211,6 +214,11 @@ def handle_message(event):
 
     elif text == '高雄天氣小幫手':
         location = '高雄市'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '台北天氣小幫手':
+        location = '台北市'
         weather_msg = weather_helper(location)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
 
