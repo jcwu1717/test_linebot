@@ -218,7 +218,7 @@ def handle_message(event):
     elif text == '高雄天氣小幫手':
         location = '高雄市'
         weather_msg = weather_helper(location)
-        ine_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
 
     # 回傳高雄市旅遊網推薦的其中一個美食
     elif text == '吃':
