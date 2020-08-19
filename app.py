@@ -81,6 +81,32 @@ def get_36h_WeatherData(locationName):
     except:
         print("try again!")
 
+def weather_helper(locationName):
+    location = locationName
+    api_token = 'CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94'
+    name = ['台北市','新北市','基隆市','花蓮縣','宜蘭縣','金門縣','澎湖縣','台南市','高雄市','嘉義縣','嘉義市','苗栗縣','台中市','桃園市','新竹縣','新竹市','屏東縣','南投縣','台東縣','彰化縣','雲林縣','連江縣']
+    if location == '台北市':
+        data_id = '09'
+    else:
+        data_id = name.index(location)+9
+    fileAPI_url = 'https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-0'+str(data_id)+'?Authorization='+api_token+'&format=JSON'
+    
+    try:
+        r = requests.get(fileAPI_url)  # JSON data
+        data_p = json.loads(r.text)  # 轉成 Python dict
+        data = data_p['records']['location']  # 需求資料本體
+        
+        weatherData = data_p['cwbopendata']['dataset']['location']['locationName'] + data_p['cwbopendata']['dataset']['parameterSet']['parameter'][0]['parameterValue'] + '\n' + \
+                      data_p['cwbopendata']['dataset']['parameterSet']['parameter'][1]['parameterValue'] + '\n' + \
+                      data_p['cwbopendata']['dataset']['parameterSet']['parameter'][2]['parameterValue']
+        
+        
+        print(data_p['cwbopendata']['dataset']['datasetInfo']['issueTime'] + ' ' +data_p['cwbopendata']['dataset']['location']['locationName'] + data_p['cwbopendata']['dataset']['datasetInfo']['datasetDescription'] + " 已取得。")
+        return weatherData
+    except:
+        print("try again!")
+
+
 def get_earthquakeData():
     api_url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/E-A0015-001?Authorization=CWB-8C0CA488-FC7E-4874-9708-A91E7D54DD94&limit=3'
     try:
@@ -188,6 +214,11 @@ def handle_message(event):
                     '降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%\n' + \
                     '舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName']
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_msg))
+
+    elif text == '高雄天氣小幫手':
+        location = '高雄市'
+        weather_msg = weather_helper(location)
+        ine_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
 
     # 回傳高雄市旅遊網推薦的其中一個美食
     elif text == '吃':
