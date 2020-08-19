@@ -91,20 +91,31 @@ def weather_helper(locationName):
         data_id = name.index(location)+9
     fileAPI_url = 'https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-0'+str(data_id)+'?Authorization='+api_token+'&format=JSON'
     
+    r = requests.get(fileAPI_url)
+    etag = req.headers['ETag']
+    headers = {'If-None-Match': etag}
     try:
-        r = requests.get(fileAPI_url)  # JSON data
-        data_p = json.loads(r.text)  # 轉成 Python dict
-        data = data_p['records']['location']  # 需求資料本體
-        
+        if requests.get(fileAPI_url,headers=headers).status_code == 304:
+            print("資料未更新")
+
+        if requests.get(fileAPI_url,headers=headers).status_code == 200:
+            print("資料已更新")
+            etag = requests.get(fileAPI_url,headers=headers).headers['ETag']
+            r = requests.get(fileAPI_url,headers=headers)
+    except:
+        print("伺服器發生錯誤 Try again!")  
+
+    try:    
+        data_p = json.loads(r.text)  # 轉成 Python dict    
         weatherData = data_p['cwbopendata']['dataset']['location']['locationName'] + data_p['cwbopendata']['dataset']['parameterSet']['parameter'][0]['parameterValue'] + '\n' + \
-                      data_p['cwbopendata']['dataset']['parameterSet']['parameter'][1]['parameterValue'] + '\n' + \
-                      data_p['cwbopendata']['dataset']['parameterSet']['parameter'][2]['parameterValue']
-        
-        
+                        data_p['cwbopendata']['dataset']['parameterSet']['parameter'][1]['parameterValue'] + '\n' + \
+                        data_p['cwbopendata']['dataset']['parameterSet']['parameter'][2]['parameterValue']
+            
+            
         print(data_p['cwbopendata']['dataset']['datasetInfo']['issueTime'] + ' ' +data_p['cwbopendata']['dataset']['location']['locationName'] + data_p['cwbopendata']['dataset']['datasetInfo']['datasetDescription'] + " 已取得。")
         return weatherData
     except:
-        print("try again!")
+        print("資料處理發生錯誤 Try again!")
 
 
 def get_earthquakeData():
@@ -143,24 +154,7 @@ def get_kh_food():
 
     
 # ================= 測試區 開始 ================     
-def print_36h_WeatherData(d):
-    #line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要看哪個時段的資訊？'))
-    #line_bot_api.reply_message(event.reply_token, TextSendMessage(text='(1)前六小時 (2)目前時段 (3)後六小時 （請輸入數字。）'))
-    
-    ch = '2'
-    
-    if (ch == '1' or ch == '2' or ch == '3'):
-        #index = int(ch)-1
-        reply_str = ("天氣：" + d['wx']['time'][1]['parameter']['parameterName'] + " 機率：" + d['wx']['time'][1]['parameter']['parameterValue'] + "% ") + \
-                    ("最低溫：" + d['min_t']['time'][1]['parameter']['parameterName'] + "度 " + " 最高溫：" + d['max_t']['time'][1]['parameter']['parameterName'] + "度 ") + \
-                    ("降雨機率：" + d['pop']['time'][1]['parameter']['parameterName'] + "% ") + \
-                    ("舒適度：" + d['cl']['time'][1]['parameter']['parameterName'])
-        
-        return reply_str
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_str))
-    
-    else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請輸入數字。'))
+
 # ================= 測試區 結束 ==============
 
 
