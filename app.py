@@ -113,7 +113,7 @@ def weather_helper(locationName):
     # 天氣訊息處理
     try:    
         data_p = json.loads(r.text)  # 轉成 Python dict    
-        weatherData = '\uDBC0\uDC84來自天氣小幫手的提醒：\n'
+        weatherData = '\uDBC0\uDC84🌦來自天氣小幫手的提醒：\n\n'
         for v in data_p['cwbopendata']['dataset']['parameterSet']['parameter']:
             weatherData += '➢ ' + v['parameterValue'] + '\n'
                     
@@ -177,7 +177,7 @@ def handle_message(event):
     GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello','嗨','你好','哈囉','您好','尼好'] # 能被接受的打招呼字串
 
     # 傳訊息
-    if (text in GreetingTxext):
+    if text in GreetingTxext:
         line_bot_api.reply_message(event.reply_token, GreetingSticker_msg) # 收到打招呼的訊息，就回復打招呼的貼圖
     
     elif text == 'profile':
@@ -252,6 +252,7 @@ def handle_message(event):
         
 
     else:
+        print('Receive:',text) # For debug
         line_bot_api.reply_message(event.reply_token, default_message)  # 只有當有訊息傳來，才回覆預設訊息
 # ================= 機器人傳訊區塊 結束 =================
         
