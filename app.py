@@ -97,6 +97,8 @@ def weather_helper(locationName):
     r = requests.get(fileAPI_url)
     etag = r.headers['ETag']
     headers = {'If-None-Match': etag}
+
+    # 檢查資料是否有更新（Etag 使用者快取機制）
     try:
         if requests.get(fileAPI_url,headers=headers).status_code == 304:
             print("資料未更新")
@@ -108,13 +110,14 @@ def weather_helper(locationName):
     except:
         print("伺服器發生錯誤 Try again!")  
 
+    # 天氣訊息處理
     try:    
         data_p = json.loads(r.text)  # 轉成 Python dict    
-        weatherData = data_p['cwbopendata']['dataset']['location']['locationName'] + data_p['cwbopendata']['dataset']['parameterSet']['parameter'][0]['parameterValue'] + '\n' + \
-                        data_p['cwbopendata']['dataset']['parameterSet']['parameter'][1]['parameterValue'] + '\n' + \
-                        data_p['cwbopendata']['dataset']['parameterSet']['parameter'][2]['parameterValue']
-            
-            
+        weatherData = '來自天氣小幫手的提醒0x1000AA：\n'
+        for v in data_p['cwbopendata']['dataset']['parameterSet']['parameter']:
+            weatherData += '➢ ' + v['parameterValue'] + '\n'
+                    
+        # 於終端機顯示已取得資料的訊息    
         print(data_p['cwbopendata']['dataset']['datasetInfo']['issueTime'] + ' ' +data_p['cwbopendata']['dataset']['location']['locationName'] + data_p['cwbopendata']['dataset']['datasetInfo']['datasetDescription'] + " 已取得。")
         return weatherData
     except:
