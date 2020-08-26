@@ -113,7 +113,7 @@ def weather_helper(locationName):
     # 天氣訊息處理
     try:    
         data_p = json.loads(r.text)  # 轉成 Python dict    
-        weatherData = '來自天氣小幫手的提醒0x1000AA：\n'
+        weatherData = '\uDBC0\uDC84來自天氣小幫手的提醒：\n'
         for v in data_p['cwbopendata']['dataset']['parameterSet']['parameter']:
             weatherData += '➢ ' + v['parameterValue'] + '\n'
                     
