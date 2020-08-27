@@ -116,6 +116,7 @@ def weather_helper(locationName):
         weatherData = '🌦來自天氣小幫手的提醒：\n\n'
         for v in data_p['cwbopendata']['dataset']['parameterSet']['parameter']:
             weatherData += '➢ ' + v['parameterValue'] + '\n'
+        weatherData += '➡️ 更多天氣訊息：https://www.cwb.gov.tw/V8/C/'
                     
         # 於終端機顯示已取得資料的訊息    
         print(data_p['cwbopendata']['dataset']['datasetInfo']['issueTime'] + ' ' +data_p['cwbopendata']['dataset']['location']['locationName'] + data_p['cwbopendata']['dataset']['datasetInfo']['datasetDescription'] + " 已取得。")
@@ -201,18 +202,18 @@ def handle_message(event):
     elif text == '高雄天氣':   
         location = '高雄市'
         weatherData = get_36h_WeatherData(location)
-        reply_msg = '天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%)\n' + \
-                    '最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度\n' + \
-                    '降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%\n' + \
-                    '舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName']
+        reply_msg = '🌏天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%)\n' + \
+                    '🔹最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '🔸最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度\n' + \
+                    '🌧降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%\n' + \
+                    '👣舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName']
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_msg))
     elif text == '台北天氣' or text == '臺北天氣':   
         location = '臺北市'
         weatherData = get_36h_WeatherData(location)
         reply_msg = '天氣：' + weatherData['wx']['time'][1]['parameter']['parameterName'] + '(' + weatherData['wx']['time'][1]['parameter']['parameterValue'] + '%)\n' + \
-                    '最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度\n' + \
-                    '降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%\n' + \
-                    '舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName']
+                    '🔹最低溫：' + weatherData['min_t']['time'][1]['parameter']['parameterName'] + '度，' + '🔸最高溫：' + weatherData['max_t']['time'][1]['parameter']['parameterName'] + '度\n' + \
+                    '🌧降雨機率：' + weatherData['pop']['time'][1]['parameter']['parameterName'] + '%\n' + \
+                    '👣舒適度：' + weatherData['cl']['time'][1]['parameter']['parameterName']
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=reply_msg))
 
     elif text == '高雄天氣小幫手':
