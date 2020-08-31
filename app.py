@@ -220,9 +220,44 @@ def handle_message(event):
         location = '高雄市'
         weather_msg = weather_helper(location)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '台中天氣小幫手':
+        location = '台中市'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
 
     elif text == '台北天氣小幫手':
         location = '台北市'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '新北天氣小幫手':
+        location = '新北市'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '基隆天氣小幫手':
+        location = '基隆市'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '花蓮天氣小幫手':
+        location = '花蓮縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '宜蘭天氣小幫手':
+        location = '宜蘭縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '南投天氣小幫手':
+        location = '南投縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '屏東天氣小幫手':
+        location = '屏東縣'
         weather_msg = weather_helper(location)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
 
