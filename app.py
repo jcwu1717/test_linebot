@@ -179,7 +179,7 @@ def handle_message(event):
 
     # 定義查天氣的imagemap
     imagemap_message = ImagemapSendMessage(
-        base_url='https://git.heroku.com/jessie-linebot.git/src',
+        base_url='~/src',
         alt_text='this is an imagemap',
         base_size=BaseSize(height=1040, width=1468),
         actions=[
