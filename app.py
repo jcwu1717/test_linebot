@@ -250,6 +250,51 @@ def handle_message(event):
         location = '宜蘭縣'
         weather_msg = weather_helper(location)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '金門天氣小幫手':
+        location = '金門縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '澎湖天氣小幫手':
+        location = '澎湖縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '台南天氣小幫手':
+        location = '台南市'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '嘉義縣天氣小幫手':
+        location = '嘉義縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '嘉義市天氣小幫手':
+        location = '嘉義市'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '苗栗天氣小幫手':
+        location = '苗栗縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '桃園天氣小幫手':
+        location = '桃園縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '新竹縣天氣小幫手':
+        location = '新竹縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '新竹市天氣小幫手':
+        location = '新竹市'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
     
     elif text == '南投天氣小幫手':
         location = '南投縣'
@@ -260,6 +305,28 @@ def handle_message(event):
         location = '屏東縣'
         weather_msg = weather_helper(location)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+
+    elif text == '台東天氣小幫手':
+        location = '台東縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '彰化天氣小幫手':
+        location = '彰化縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '雲林天氣小幫手':
+        location = '雲林縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    elif text == '連江縣天氣小幫手':
+        location = '連江縣'
+        weather_msg = weather_helper(location)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=weather_msg))
+    
+    
 
     # 回傳高雄市旅遊網推薦的其中一個美食
     elif text == '吃':
