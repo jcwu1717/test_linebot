@@ -177,6 +177,22 @@ def handle_message(event):
     GreetingSticker_msg = StickerSendMessage(package_id='11538',sticker_id='51626494') #打招呼貼圖
     GreetingTxext = ['hi','HI','Hi','hello','HELLO','Hello','嗨','你好','哈囉','您好','尼好'] # 能被接受的打招呼字串
 
+    # 定義查天氣的imagemap
+    imagemap_message = ImagemapSendMessage(
+        base_url='https://git.heroku.com/jessie-linebot.git/src',
+        alt_text='this is an imagemap',
+        base_size=BaseSize(height=1040, width=1468),
+        actions=[
+            URIImagemapAction(
+                link_uri='https://line.me/R/oaMessage/@muv0414i/?連江縣天氣小幫手',
+                area=ImagemapArea(
+                    x=83, y=71, width=240, height=210
+                )
+            )
+            
+        ]
+    )
+
     # 傳訊息
     if text in GreetingTxext:
         line_bot_api.reply_message(event.reply_token, GreetingSticker_msg) # 收到打招呼的訊息，就回復打招呼的貼圖
@@ -196,9 +212,9 @@ def handle_message(event):
                 TextSendMessage(text="Bot can't use profile API without user ID"))
     # NEED Update
     elif (text == '查天氣'):
-        ### TODO: 使用使用者位置查詢天氣 get reply_token to trace event
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='請問要查台灣哪裡的天氣？'))
-        
+        line_bot_api.reply_message(event.reply_token, imagemap_message)
+
+     
     elif text == '高雄天氣':   
         location = '高雄市'
         weatherData = get_36h_WeatherData(location)
