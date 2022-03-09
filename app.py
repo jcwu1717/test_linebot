@@ -15,10 +15,10 @@ app = Flask(__name__)  # 宣告一個變數負責掌握 Flask server
 
 # line_bot_api 物件初始化
 # Channel Access Token
-line_bot_api = LineBotApi('/4H1wt0E95nEWM3TGxgVPT7RkJ49/so8+uCV7v/eIqpudbbbkiCdrpLghCwZU63ud4bcd4rLF6UX/RYhXWKRxmtpSynYQDkc2dHb2P1CxcuZeWPO8kLVoSLZmmEZDjxU3TbnbQsSghwzsfkiffXnJgdB04t89/1O/w1cDnyilFU=')
+line_bot_api = LineBotApi('token')
 
 # handler 負責處理送過來的資料
-handler = WebhookHandler('19e6bc627574a011e38188c898f6cb26')  # Channel Secret
+handler = WebhookHandler('channel_secret')  # Channel Secret
 
 ### 我還是不懂在幹嘛的東西
 # 監聽所有來自 /callback 的 Post Request
